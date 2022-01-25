@@ -21,10 +21,6 @@ class Delivery:
     on_time: bool
 
 
-
-    def was_on_time(self) -> bool:
-        return self.arrived and self.on_time
-
 class DeliveryController:
 
     def __init__(self, delivery_schedule : list):
