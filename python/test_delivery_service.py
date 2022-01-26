@@ -37,7 +37,7 @@ def test_delivery_calculator():
  ('customer2@example.com',
   'Your delivery will arrive soon',
   'Your delivery to Location(latitude=52.406374, longitude=16.9251681) is '
-  'next, estimated time of arrival is in 334.25470722128034 minutes. Be '
+  'next, estimated time of arrival is in 334 minutes. Be '
   'ready!')]
     assert sut.map_service.average_speed == 50
 

@@ -21,10 +21,6 @@ class Delivery:
     on_time: bool
 
 
-
-    def was_on_time(self) -> bool:
-        return self.arrived and self.on_time
-
 class DeliveryController:
 
     def __init__(self, delivery_schedule : list):
@@ -51,7 +47,7 @@ class DeliveryController:
                     self.map_service.update_average_speed(previous_delivery.location, delivery.location, elapsed_time)
         if next_delivery:
             next_eta = self.map_service.calculate_eta(delivery_event.location, next_delivery.location)
-            message = f"Your delivery to {next_delivery.location} is next, estimated time of arrival is in {next_eta} minutes. Be ready!"
+            message = f"Your delivery to {next_delivery.location} is next, estimated time of arrival is in {next_eta:.0f} minutes. Be ready!"
             self.email_gateway.send(next_delivery.contact_email, "Your delivery will arrive soon", message)
 
 
