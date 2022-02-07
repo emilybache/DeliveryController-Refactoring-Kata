@@ -10,6 +10,7 @@ repositories {
 dependencies {
     implementation platform('org.jetbrains.kotlin:kotlin-bom')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    implementation 'jakarta.mail:jakarta.mail-api:1.6.4'
 
     testImplementation(platform("org.junit:junit-bom:5.8.+"))
     testImplementation("org.junit.jupiter:junit-jupiter")
