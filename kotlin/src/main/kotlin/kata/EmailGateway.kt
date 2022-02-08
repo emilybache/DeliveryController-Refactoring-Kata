@@ -1,11 +1,10 @@
 package kata
 
-import java.net.PasswordAuthentication
-import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeBodyPart
-import javax.mail.internet.MimeMessage
-import javax.mail.internet.MimeMultipart
+import jakarta.mail.*
+import jakarta.mail.internet.InternetAddress
+import jakarta.mail.internet.MimeBodyPart
+import jakarta.mail.internet.MimeMessage
+import jakarta.mail.internet.MimeMultipart
 
 
 class EmailGateway {
@@ -17,18 +16,18 @@ class EmailGateway {
             "mail.smtp.port" to "587",
             "mail.smtp.auth" to "true",
             "mail.smtp.ssl.trust" to "localhost",
-            "mail.smtp.starttls.enable" to "true"
+            "mail.smtp.ssl.enable" to "true"
         ).toProperties()
 
         val session: Session = Session.getInstance(prop, object : Authenticator() {
-            val passwordAuthentication: PasswordAuthentication
-                get() = PasswordAuthentication("email", "password".toCharArray())
+            override fun getPasswordAuthentication(): PasswordAuthentication =
+                PasswordAuthentication("email", "password")
         })
 
         val message: Message = MimeMessage(session)
         val mimeBodyPart = MimeBodyPart()
         mimeBodyPart.setContent(msg, "text/html; charset=utf-8")
-        val multipart: Multipart = MimeMultipart()
+        val multipart = MimeMultipart()
         multipart.addBodyPart(mimeBodyPart)
         message.setContent(multipart)
 
