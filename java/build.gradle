@@ -26,9 +26,6 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.compilerArgs.add("-Xlint:all")
     options.incremental = true
-
-    if (jdkWithPreviewFeatures())
-        options.compilerArgs.add("--enable-preview")
 }
 
 test {
@@ -37,22 +34,10 @@ test {
         events "passed", "skipped", "failed"
     }
     finalizedBy jacocoTestReport
-
-    if (jdkWithPreviewFeatures())
-        jvmArgs("--enable-preview")
 }
 
 jacoco {
     toolVersion = "0.8.7"
-}
-
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
-                'Main-Class': 'kata.App'
-        )
-    }
 }
 
 jacocoTestReport {
@@ -61,10 +46,4 @@ jacocoTestReport {
         csv.enabled false
         html.destination file("${buildDir}/jacocoHtml")
     }
-}
-
-static def jdkWithPreviewFeatures() {
-    def currentJvm = org.gradle.internal.jvm.Jvm.current()
-    def matcher = currentJvm =~ /^\d+/
-    return matcher[0].toInteger() > 11
 }
