@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.sun.mail:jakarta.mail:2.0.1")
+
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("com.approvaltests:approvaltests:13.3.0")
+    testImplementation("com.larseckart:junit-tcr-extensions:0.0.1")
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add("-Xlint:all")
+    options.incremental = true
+
+    if (jdkWithPreviewFeatures())
+        options.compilerArgs.add("--enable-preview")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    finalizedBy jacocoTestReport
+
+    if (jdkWithPreviewFeatures())
+        jvmArgs("--enable-preview")
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
+                'Main-Class': 'kata.App'
+        )
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+static def jdkWithPreviewFeatures() {
+    def currentJvm = org.gradle.internal.jvm.Jvm.current()
+    def matcher = currentJvm =~ /^\d+/
+    return matcher[0].toInteger() > 11
+}
