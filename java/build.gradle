@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.sun.mail:jakarta.mail:2.0.1")
+
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("com.approvaltests:approvaltests:13.3.0")
+    testImplementation("com.larseckart:junit-tcr-extensions:0.0.1")
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add("-Xlint:all")
+    options.incremental = true
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
