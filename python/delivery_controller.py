@@ -5,7 +5,7 @@ from email_gateway import EmailGateway
 from map_service import MapService, Location
 
 
-@dataclass
+@dataclass(frozen=True)
 class DeliveryEvent:
     id: str
     time_of_delivery: datetime.datetime
