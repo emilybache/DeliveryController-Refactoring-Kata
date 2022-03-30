@@ -7,10 +7,12 @@ R = 6373.0
 MINUTES_PER_HOUR = 60
 SECONDS_PER_HOUR = 3600
 
+
 @dataclass
 class Location:
     latitude: float
     longitude: float
+
 
 class MapService:
     def __init__(self, average_speed=50):
