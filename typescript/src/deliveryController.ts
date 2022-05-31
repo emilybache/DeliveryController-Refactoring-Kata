@@ -36,7 +36,7 @@ export class DeliveryController {
             const delivery = this.#deliveries[i];
             if (delivery.id === event.id) {
                 delivery.arrived = true;
-                var timeDifference = delivery.timeOfDelivery.getTime() - event.timeOfDelivery.getTime();
+                var timeDifference = event.timeOfDelivery.getTime() - delivery.timeOfDelivery.getTime();
                 if (timeDifference < TEN_MINUTES) {
                     delivery.onTime = true;
                 }
