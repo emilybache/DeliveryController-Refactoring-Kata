@@ -34,4 +34,9 @@ export class MapService {
         return R * c;
     }
 
+    public updateAverageSpeed(location1: Location, location2: Location, elapsed: number) {
+        const distance = this.calculateDistance(location1, location2)
+        this.#averageSpeed = distance / (elapsed / SECONDS_PER_HOUR)
+    }
+
 }
